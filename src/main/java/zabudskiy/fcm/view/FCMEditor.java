@@ -31,6 +31,8 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
 
     private TextField mapName = new TextField("Map name");
     private TextField connectionName = new TextField("Name");
+        private TextField conceptName = new TextField("Concept name");
+        private TextArea conceptDesc = new TextArea("Description");
     private TextArea connectionDesc = new TextArea("Description");
     private TextField connectionWeight = new TextField("Weight");
     private TextField fromConcept = new TextField("From concept");
@@ -41,12 +43,13 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
     Button addConcepts = new Button("Add concepts", VaadinIcon.PLUS.create());
     private Button addConnection = new Button("Add connection", VaadinIcon.ENTER.create());
     private Button executeMap = new Button("Execute map", VaadinIcon.ABACUS.create());
-    private HorizontalLayout actions = new HorizontalLayout(save, delete, addConcepts);
+    private HorizontalLayout actions = new HorizontalLayout(save, delete);
 
     private Grid<ConceptDto> conceptGrid = new Grid<>(ConceptDto.class);
 
     private HorizontalLayout connections = new HorizontalLayout(connectionName, fromConcept, toConcept,
             connectionDesc, connectionWeight);
+    private HorizontalLayout concepts = new HorizontalLayout(conceptName, conceptDesc);
 
     private ChangeHandler changeHandler;
 
@@ -76,7 +79,7 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
         addConcepts.setEnabled(false);
         addConnection.setEnabled(false);
         executeMap.setEnabled(false);
-        add(mapName, actions, connections, addConnection, executeMap, conceptGrid);
+        add(mapName, actions,concepts, addConcepts, connections, addConnection, executeMap, conceptGrid);
 
         save.getElement().getThemeList().add("primary");
         delete.getElement().getThemeList().add("error");
@@ -89,30 +92,30 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
 
         delete.addClickListener(e -> delete(mapName.getValue()));
         addConcepts.addClickListener(e -> createConceptsForMap(mapName.getValue()));
-        addConcepts.addClickListener(e -> addConnection.setEnabled(true));
+        addConcepts.addClickListener(e -> createConceptsForBratan(conceptName.getValue(), conceptDesc.getValue(), mapName.getValue()));
+//        addConcepts.addClickListener(e -> addConnection.setEnabled(true));
         addConnection.addClickListener(e -> createConnection(connectionName.getValue(), connectionDesc.getValue(),
                 Double.parseDouble(connectionWeight.getValue()), mapName.getValue(), fromConcept.getValue(),
                 toConcept.getValue()));
-        addConnection.addClickListener(e -> executeMap.setEnabled(true));
+//        addConnection.addClickListener(e -> executeMap.setEnabled(true));
         executeMap.addClickListener(e -> execute(mapName.getValue()));
         executeMap.addClickListener(e -> conceptGrid.setItems(c.getByName(mapName.getValue()).getConcepts()));
-        executeMap.addClickListener(e -> conceptGrid.setVisible(true));
+        //executeMap.addClickListener(e -> conceptGrid.setVisible(true));
         setVisible(false);
     }
 
-//    private void editMap(FCMDto cmr) {
-////        if (cmr == null) {
-////            setVisible(false);
-////            return;
-////        }
-//        if (cmr.getName() != null) {
-//            this.fcmDto = this.fcmService.getByName(cmr.getName());
-//        } else {
-//            this.fcmDto = cmr;
-//        }
-//        binder.setBean(this.fcmService);
-//        mapName.focus();
-//    }
+    private void createConceptsForBratan(String conceptName, String description, String mapName){
+        try {
+            conceptService.addFlexConcept(conceptName, description, mapName);
+            addConnection.setEnabled(true);
+            changeHandler.onChange();
+        }
+        catch (CognitiveMapBadRequestException e) {
+            Notification notification = new Notification(
+                    e.getMessage(), 3000);
+            notification.open();
+        }
+    }
 
     private void createConceptsForMap(String s) {
         try {
@@ -130,6 +133,7 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
             conceptService.addFlexConcept("c11", "Wrong legacy systems management", s);
             conceptService.addFlexConcept("c12", "IT security issues", s);
             conceptService.addFlexConcept("c13", "Low Performance", s);
+            addConnection.setEnabled(true);
             changeHandler.onChange();
         } catch (CognitiveMapBadRequestException e) {
             Notification notification = new Notification(
@@ -141,6 +145,7 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
     private void execute(String s) {
         try {
             fcmService.execute(s);
+            conceptGrid.setVisible(true);
         } catch (CognitiveMapBadRequestException e) {
             Notification notification = new Notification(e.getMessage(), 3000);
             notification.open();
@@ -172,7 +177,8 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
             try {
                 connectionService.addConnection(name, desc, weight, mapName, fromC, toC);
                 changeHandler.onChange();
-            } catch (CognitiveMapBadRequestException e) {
+                executeMap.setEnabled(true);
+            } catch (CognitiveMapNotFoundException e) {
                 Notification notification = new Notification(e.getMessage(), 3000);
                 notification.open();
 
