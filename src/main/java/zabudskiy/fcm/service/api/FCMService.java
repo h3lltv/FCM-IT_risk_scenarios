@@ -2,7 +2,7 @@ package zabudskiy.fcm.service.api;
 
 
 
-import zabudskiy.fcm.web.protocol.response.FCMDto;
+import zabudskiy.fcm.dto.FCMDto;
 
 import java.util.List;
 

@@ -5,11 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import zabudskiy.fcm.model.repository.api.FCMRepository;
+import zabudskiy.fcm.repository.api.FCMRepository;
 import zabudskiy.fcm.service.api.FCMService;
 import zabudskiy.fcm.service.exceptions.CognitiveMapBadRequestException;
 import zabudskiy.fcm.service.exceptions.CognitiveMapNotFoundException;
-import zabudskiy.fcm.web.protocol.response.FCMDto;
+import zabudskiy.fcm.dto.FCMDto;
 
 import java.util.List;
 import java.util.Optional;

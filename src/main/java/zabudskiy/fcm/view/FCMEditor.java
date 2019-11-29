@@ -10,18 +10,15 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.beans.factory.annotation.Autowired;
-import zabudskiy.fcm.service.api.FCMService;
 import zabudskiy.fcm.service.exceptions.CognitiveMapBadRequestException;
 import zabudskiy.fcm.service.exceptions.CognitiveMapNotFoundException;
 import zabudskiy.fcm.service.impl.FCMServiceImpl;
 import zabudskiy.fcm.service.impl.ConceptServiceImpl;
 import zabudskiy.fcm.service.impl.ConnectionServiceImpl;
-import zabudskiy.fcm.web.protocol.response.FCMDto;
-import zabudskiy.fcm.web.protocol.response.ConceptDto;
+import zabudskiy.fcm.dto.ConceptDto;
 
 @SpringComponent
 @UIScope

@@ -1,4 +1,4 @@
-package zabudskiy.fcm.web.protocol.response;
+package zabudskiy.fcm.dto;
 
 import org.megadix.jfcm.Concept;
 

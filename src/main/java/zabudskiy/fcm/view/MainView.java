@@ -10,7 +10,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import zabudskiy.fcm.service.impl.FCMServiceImpl;
-import zabudskiy.fcm.web.protocol.response.FCMDto;
+import zabudskiy.fcm.dto.FCMDto;
 
 @Route("")
 public class MainView extends VerticalLayout {
