@@ -38,7 +38,8 @@ public class CognitiveMapEditor extends VerticalLayout implements KeyNotifier {
     private TextField connectionWeight = new TextField("Weight");
     private TextField fromConcept = new TextField("From concept");
     private TextField toConcept = new TextField("To concept");
-    private NumberField conceptValue = new NumberField();;
+    private NumberField conceptValue = new NumberField();
+    ;
 
     Button save = new Button("Save", VaadinIcon.CHECK.create());
     Button delete = new Button("Delete", VaadinIcon.TRASH.create());
@@ -52,7 +53,7 @@ public class CognitiveMapEditor extends VerticalLayout implements KeyNotifier {
 
     private HorizontalLayout connections = new HorizontalLayout(connectionName, fromConcept, toConcept,
             connectionDesc, connectionWeight);
-    private HorizontalLayout concepts = new HorizontalLayout(conceptName,conceptValue, conceptDesc);
+    private HorizontalLayout concepts = new HorizontalLayout(conceptName, conceptValue, conceptDesc);
 
     private ChangeHandler changeHandler;
 
@@ -91,7 +92,7 @@ public class CognitiveMapEditor extends VerticalLayout implements KeyNotifier {
         addHardConcept.setEnabled(false);
         addConnection.setEnabled(false);
         executeMap.setEnabled(false);
-        add(mapName, actions,concepts, addFLexConcept, addHardConcept, connections, addConnection, executeMap, conceptGrid);
+        add(mapName, actions, concepts, addFLexConcept, addHardConcept, connections, addConnection, executeMap, conceptGrid);
 
         save.getElement().getThemeList().add("primary");
         delete.getElement().getThemeList().add("error");
@@ -104,60 +105,53 @@ public class CognitiveMapEditor extends VerticalLayout implements KeyNotifier {
         save.addClickListener(e -> connections.setVisible(true));
 
         delete.addClickListener(e -> delete(mapName.getValue()));
-//        addFLexConcept.addClickListener(e -> createConceptsForMap(mapName.getValue()));
         addFLexConcept.addClickListener(e -> createConceptsForFlexBratan(conceptName.getValue(), conceptDesc.getValue(),
                 conceptValue.getValue(), mapName.getValue()));
         addHardConcept.addClickListener(e -> createConceptsForHardBratan(conceptName.getValue(), conceptDesc.getValue(),
                 conceptValue.getValue(), mapName.getValue()));
-//        addConcepts.addClickListener(e -> addConnection.setEnabled(true));
         addConnection.addClickListener(e -> createConnection(connectionName.getValue(), connectionDesc.getValue(),
                 Double.parseDouble(connectionWeight.getValue()), mapName.getValue(), fromConcept.getValue(),
                 toConcept.getValue()));
-//        addConnection.addClickListener(e -> executeMap.setEnabled(true));
+
         executeMap.addClickListener(e -> execute(mapName.getValue()));
         executeMap.addClickListener(e -> conceptGrid.setItems(c.getByName(mapName.getValue()).getConcepts()));
-        //executeMap.addClickListener(e -> conceptGrid.setVisible(true));
+
         setVisible(false);
     }
 
-    private void createConceptsForFlexBratan(String conceptName, String description, double weight, String mapName){
-        try {
-            conceptService.addFlexConcept(conceptName, description,weight, mapName);
-            addConnection.setEnabled(true);
-            changeHandler.onChange();
-        }
-        catch (CognitiveMapBadRequestException e) {
-            Notification notification = new Notification(
-                    e.getMessage(), 3000);
-            notification.open();
-        }
-    }
-
-    private void createConceptsForHardBratan(String conceptName, String description,double weight, String mapName){
-        try {
-            conceptService.addHardConcept(conceptName, description,weight, mapName);
-            addConnection.setEnabled(true);
-            changeHandler.onChange();
-        }
-        catch (CognitiveMapBadRequestException e) {
-            Notification notification = new Notification(
-                    e.getMessage(), 3000);
-            notification.open();
+    private void createConceptsForFlexBratan(String conceptName, String description, double weight, String mapName) {
+        if (weight >= 0 && weight <= 1) {
+            try {
+                conceptService.addFlexConcept(conceptName, description, weight, mapName);
+                addConnection.setEnabled(true);
+                changeHandler.onChange();
+            } catch (CognitiveMapBadRequestException e) {
+                Notification notification = new Notification(
+                        e.getMessage(), 3000);
+                notification.open();
+            }
+        } else {
+            Notification nt = new Notification("Weight must be in range from 0 to 1");
+            nt.open();
         }
     }
 
-//    private void createConceptsForMap(String s) {
-//        try {
-//            conceptService.addFlexConcept("c1", "Wrong IT tools selection", s);
-//
-//            addConnection.setEnabled(true);
-//            changeHandler.onChange();
-//        } catch (CognitiveMapBadRequestException e) {
-//            Notification notification = new Notification(
-//                    e.getMessage(), 3000);
-//            notification.open();
-//        }
-//    }
+    private void createConceptsForHardBratan(String conceptName, String description, double weight, String mapName) {
+        if (weight >= 0 && weight <= 1) {
+            try {
+                conceptService.addHardConcept(conceptName, description, weight, mapName);
+                addConnection.setEnabled(true);
+                changeHandler.onChange();
+            } catch (CognitiveMapBadRequestException e) {
+                Notification notification = new Notification(
+                        e.getMessage(), 3000);
+                notification.open();
+            }
+        } else {
+            Notification nt = new Notification("Weight must be in range from 0 to 1");
+            nt.open();
+        }
+    }
 
     private void execute(String s) {
         try {
@@ -190,7 +184,7 @@ public class CognitiveMapEditor extends VerticalLayout implements KeyNotifier {
     }
 
     private void createConnection(String name, String desc, double weight, String mapName, String fromC, String toC) {
-
+        if (weight >= -1 && weight <= 1) {
             try {
                 connectionService.addConnection(name, desc, weight, mapName, fromC, toC);
                 changeHandler.onChange();
@@ -199,6 +193,9 @@ public class CognitiveMapEditor extends VerticalLayout implements KeyNotifier {
                 Notification notification = new Notification(e.getMessage(), 3000);
                 notification.open();
             }
-
+        } else {
+            Notification not = new Notification("Weight must be in range from -1 to 1", 3000);
+            not.open();
+        }
     }
 }

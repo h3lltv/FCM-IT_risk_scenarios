@@ -11,7 +11,6 @@ import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import ptash.petr.cognitivemaps.service.impl.CognitiveMapServiceImpl;
 import ptash.petr.cognitivemaps.web.protocol.response.CognitiveMapDto;
-//import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 
 @Route("")
@@ -40,6 +39,8 @@ public class MainView extends VerticalLayout {
 
         filter.setPlaceholder("Filter by map name");
         filter.setValueChangeMode(ValueChangeMode.EAGER);
+        filter.addValueChangeListener(field -> fillList(field.getValue()));
+
         add(toolbar, grid, editor);
 
         editor.save.addClickListener(e -> grid.setItems(fcmService.getAll()));
