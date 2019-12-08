@@ -1,8 +1,8 @@
-package zabudskiy.fcm.repository.impl;
+package zabudskiy.fcm.model.repository.impl;
 
 import org.megadix.jfcm.CognitiveMap;
 import org.springframework.stereotype.Component;
-import zabudskiy.fcm.repository.api.FCMRepository;
+import zabudskiy.fcm.model.repository.api.FCMRepository;
 
 import java.util.*;
 

@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import zabudskiy.fcm.repository.api.FCMRepository;
+import zabudskiy.fcm.model.repository.api.FCMRepository;
 import zabudskiy.fcm.service.api.FCMConceptService;
 import zabudskiy.fcm.service.exceptions.CognitiveMapBadRequestException;
 import zabudskiy.fcm.service.exceptions.CognitiveMapNotFoundException;

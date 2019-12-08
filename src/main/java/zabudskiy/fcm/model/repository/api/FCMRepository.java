@@ -1,4 +1,4 @@
-package zabudskiy.fcm.repository.api;
+package zabudskiy.fcm.model.repository.api;
 
 import org.megadix.jfcm.CognitiveMap;
 
