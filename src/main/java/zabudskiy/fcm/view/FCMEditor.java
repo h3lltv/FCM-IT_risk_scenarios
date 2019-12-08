@@ -11,9 +11,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
-import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
-//import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,15 +35,11 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
     private static final double[] scenarioC = {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     private TextField mapName = new TextField("Map name");
-    private TextField connectionName = new TextField("Name");
-    private TextArea connectionDesc = new TextArea("Description");
-    private TextField connectionWeight = new TextField("Weight");
     private TextField fromConcept = new TextField("From concept");
     private TextField toConcept = new TextField("To concept");
 
     Button save = new Button("Save", VaadinIcon.CHECK.create());
     Button delete = new Button("Delete", VaadinIcon.TRASH.create());
-    //    Button addConcepts = new Button("Add concepts", VaadinIcon.PLUS.create());
     Button addConnection = new Button("Add connection", VaadinIcon.ENTER.create());
     private Button newScenario = new Button("Custom scenario", VaadinIcon.ABACUS.create());
     Button setCustomScenario = new Button("Set scenario", VaadinIcon.ASTERISK.create());
@@ -67,9 +61,6 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
     ComboBox<String> concepts = new ComboBox<>("Scenario");
 
     private Grid<ConceptDto> conceptGrid = new Grid<>(ConceptDto.class);
-
-//    private HorizontalLayout connections = new HorizontalLayout(connectionName, fromConcept, toConcept,
-//            connectionDesc, connectionWeight);
 
     private ChangeHandler changeHandler;
 
@@ -101,14 +92,12 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
         numberField2.setMax(1);
         numberField2.setPlaceholder("c2");
 
-
         numberField3 = new NumberField();
         numberField3.setHasControls(true);
         numberField3.setStep(0.01d);
         numberField3.setMin(0);
         numberField3.setMax(1);
         numberField3.setPlaceholder("c3");
-
 
         numberField4 = new NumberField();
         numberField4.setHasControls(true);
@@ -117,14 +106,12 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
         numberField4.setMax(1);
         numberField4.setPlaceholder("c4");
 
-
         numberField5 = new NumberField();
         numberField5.setHasControls(true);
         numberField5.setStep(0.01d);
         numberField5.setMin(0);
         numberField5.setMax(1);
         numberField5.setPlaceholder("c5");
-
 
         numberField6 = new NumberField();
         numberField6.setHasControls(true);
@@ -133,14 +120,12 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
         numberField6.setMax(1);
         numberField6.setPlaceholder("c6");
 
-
         numberField7 = new NumberField();
         numberField7.setHasControls(true);
         numberField7.setStep(0.01d);
         numberField7.setMin(0);
         numberField7.setMax(1);
         numberField7.setPlaceholder("c7");
-
 
         numberField8 = new NumberField();
         numberField8.setHasControls(true);
@@ -149,14 +134,12 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
         numberField8.setMax(1);
         numberField8.setPlaceholder("c8");
 
-
         numberField9 = new NumberField();
         numberField9.setHasControls(true);
         numberField9.setStep(0.01d);
         numberField9.setMin(0);
         numberField9.setMax(1);
         numberField9.setPlaceholder("c9");
-
 
         numberField10 = new NumberField();
         numberField10.setHasControls(true);
@@ -172,7 +155,6 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
         numberField11.setMax(1);
         numberField11.setPlaceholder("c11");
 
-
         numberField12 = new NumberField();
         numberField12.setHasControls(true);
         numberField12.setStep(0.01d);
@@ -180,14 +162,13 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
         numberField12.setMax(1);
         numberField12.setPlaceholder("c12");
 
-
         numberField13 = new NumberField();
         numberField13.setHasControls(true);
         numberField13.setStep(0.01d);
         numberField13.setMin(0);
         numberField13.setMax(1);
         numberField13.setPlaceholder("c13");
-//        columnLayout.setVisible(false);
+
         columnLayout.add(numberField1, numberField2, numberField2, numberField2, numberField3, numberField4, numberField5,
                 numberField6, numberField7, numberField8, numberField9, numberField10, numberField11, numberField12, numberField13);
         columnLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("10em", 3));
@@ -214,14 +195,14 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
             }
         });
 
-//        connections.setVisible(false);
+
         conceptGrid.setVisible(false);
         conceptGrid.setColumnReorderingAllowed(true);
         conceptGrid.setHeightByRows(true);
 
         fromConcept.setPlaceholder("c1");
         toConcept.setPlaceholder("c2");
-//        addConcepts.setEnabled(false);
+
         addConnection.setEnabled(false);
         executeMap.setEnabled(false);
         setCustomScenario.setVisible(false);
@@ -235,7 +216,6 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
         save.addClickListener(e -> newScenario.setVisible(true));
 
         delete.addClickListener(e -> delete(mapName.getValue()));
-//        addConcepts.addClickListener(e -> createConceptsForMap(mapName.getValue()));
         addConnection.addClickListener(e -> setConnections());
         executeMap.addClickListener(e -> execute(mapName.getValue()));
         executeMap.addClickListener(e -> conceptGrid.setItems(c.getByName(mapName.getValue()).getConcepts()));
@@ -304,9 +284,7 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
     private void save(String s) {
         try {
             fcmService.createNewMap(s);
-//            addConcepts.setEnabled(true);
             concepts.setVisible(true);
-//            connections.setVisible(true);
             executeMap.setEnabled(true);
             changeHandler.onChange();
         } catch (CognitiveMapBadRequestException e) {
@@ -314,24 +292,6 @@ public class FCMEditor extends VerticalLayout implements KeyNotifier {
             notification.open();
         }
     }
-
-//    private void createConnection(String name, String desc, double weight, String mapName, String fromC, String toC) {
-//        if (weight >= 0 && weight <= 1) {
-//            try {
-//                connectionService.addConnection(name, desc, weight, mapName, fromC, toC);
-////                executeMap.setEnabled(true);
-//                changeHandler.onChange();
-//            } catch (CognitiveMapBadRequestException e) {
-//                Notification notification = new Notification(e.getMessage(), 3000);
-//                notification.open();
-//
-//            }
-//        } else {
-//            Notification notification = new Notification("Please, enter correct weight!", 3000);
-//            notification.open();
-//            connectionWeight.focus();
-//        }
-//    }
 
     private void setConnections() {
         connectionService.addConnection("c1>c2", "", 0.4, mapName.getValue(), "c1", "c2");
