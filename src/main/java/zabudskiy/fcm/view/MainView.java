@@ -28,9 +28,9 @@ public class MainView extends VerticalLayout {
         this.repo = fcmService;
 
         setSpacing(true);
-        setSizeFull();
+      //  setSizeFull();
 
-        grid.setVerticalScrollingEnabled(true);
+//        grid.setVerticalScrollingEnabled(true);
         grid.setColumnReorderingAllowed(true);
         grid.setHeightByRows(true);
        // grid.getColumnByKey("name").setFlexGrow(1);
@@ -38,12 +38,16 @@ public class MainView extends VerticalLayout {
 
         filter.setPlaceholder("Filter by map name");
         filter.setValueChangeMode(ValueChangeMode.EAGER);
+        filter.addValueChangeListener(field -> fillList(field.getValue()));
         add(toolbar, grid, editor);
 
         editor.save.addClickListener(e -> grid.setItems(fcmService.getAll()));
         editor.delete.addClickListener(e -> grid.setItems(fcmService.getAll()));
+        editor.addConnection.addClickListener(e -> grid.setItems(fcmService.getAll()));
         createMapButton.addClickListener(e -> editor.setVisible(true));
-        editor.addConcepts.addClickListener(e -> grid.setItems(fcmService.getAll()));
+        createMapButton.addClickListener(e -> grid.setItems(fcmService.getAll()));
+        editor.concepts.addValueChangeListener(event -> grid.setItems(fcmService.getAll()));
+//        editor.addConcepts.addClickListener(e -> grid.setItems(fcmService.getAll()));
 
         editor.setChangeHandler(() -> {
             fillList(filter.getValue());

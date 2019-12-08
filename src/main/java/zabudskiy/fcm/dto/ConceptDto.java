@@ -1,7 +1,6 @@
 package zabudskiy.fcm.dto;
 
 import org.megadix.jfcm.Concept;
-
 public class ConceptDto {
 
     private String name;

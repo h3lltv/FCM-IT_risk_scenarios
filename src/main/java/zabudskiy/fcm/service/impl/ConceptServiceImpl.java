@@ -31,8 +31,8 @@ public class ConceptServiceImpl implements FCMConceptService {
     }
 
     @Override
-    public void addFlexConcept(String conceptName, String conceptDescription, String mapName) {
-        Concept concept = new Concept(conceptName, conceptDescription, new SigmoidActivator(), 0.0, 0.0, false);
+    public void addFlexConcept(String conceptName, String conceptDescription, String mapName, double out) {
+        Concept concept = new Concept(conceptName, conceptDescription, new SigmoidActivator(), 0.0, out, false);
         addConcept(concept, mapName);
     }
 
