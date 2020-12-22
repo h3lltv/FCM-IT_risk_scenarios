@@ -21,7 +21,6 @@ import ptash.petr.cognitivemaps.service.impl.ConceptServiceImpl;
 import ptash.petr.cognitivemaps.service.impl.ConnectionServiceImpl;
 import ptash.petr.cognitivemaps.web.protocol.response.ConceptDto;
 
-
 @SpringComponent
 @UIScope
 public class CognitiveMapEditor extends VerticalLayout implements KeyNotifier {
@@ -39,7 +38,6 @@ public class CognitiveMapEditor extends VerticalLayout implements KeyNotifier {
     private TextField fromConcept = new TextField("From concept");
     private TextField toConcept = new TextField("To concept");
     private NumberField conceptValue = new NumberField();
-    ;
 
     Button save = new Button("Save", VaadinIcon.CHECK.create());
     Button delete = new Button("Delete", VaadinIcon.TRASH.create());
@@ -71,7 +69,6 @@ public class CognitiveMapEditor extends VerticalLayout implements KeyNotifier {
         this.fcmService = c;
         this.conceptService = csi;
         this.connectionService = conService;
-
 //        conceptValue = new NumberField();
         conceptValue.setHasControls(true);
         conceptValue.setStep(0.01d);
